@@ -7,7 +7,7 @@ class QuizView extends Component {
     super(props);
 
     this.state = {
-      questions: this.props.navigation.state.params.questions,
+      cards: this.props.navigation.state.params.cards,
       currentQuestion: 0,
       showAnswer: false,
       score: 0,
@@ -39,7 +39,7 @@ class QuizView extends Component {
   }
 
   handleFinalQuestion() {
-    if (this.state.currentQuestion + 1 === this.state.questions.length) {
+    if (this.state.currentQuestion + 1 === this.state.cards.length) {
       this.setState({
         showFinalResults: true
       });
@@ -47,7 +47,7 @@ class QuizView extends Component {
   }
 
   handleNextQuestion() {
-    if (this.state.currentQuestion === this.state.questions.length - 1) return;
+    if (this.state.currentQuestion === this.state.cards.length - 1) return;
 
     this.setState(prevState => ({
       currentQuestion: prevState.currentQuestion + 1,
@@ -74,21 +74,21 @@ class QuizView extends Component {
     const {
       currentQuestion,
       showAnswer,
-      questions,
+      cards,
       score,
       showFinalResults
     } = this.state;
 
-    const item = questions[currentQuestion];
-    console.log('questions array', item);
+    const item = cards[currentQuestion];
+    console.log('cards array', item);
 
     if (showFinalResults) {
       return (
         <View>
           <Text>
-            {score} / {questions.length}
+            {score} / {cards.length}
           </Text>
-          <Text>You got {score / questions.length * 100}%</Text>
+          <Text>You got {score / cards.length * 100}%</Text>
           <TouchableHighlight
             style={styles.btn}
             onPress={this.onRestartQuiz.bind(this)}
@@ -100,7 +100,7 @@ class QuizView extends Component {
             onPress={() =>
               this.props.navigation.navigate('IndividualDeck', {
                 deckTitle: this.props.navigation.state.params.title,
-                deckQuestions: questions
+                deckCards: cards
               })
             }
           >
@@ -113,7 +113,7 @@ class QuizView extends Component {
     return (
       <View>
         <Text>
-          {currentQuestion + 1} / {questions.length}
+          {currentQuestion + 1} / {cards.length}
         </Text>
         <Text>{!showAnswer ? item.question : item.answer}</Text>
         <TouchableHighlight onPress={this.onToggleAnswer.bind(this)}>

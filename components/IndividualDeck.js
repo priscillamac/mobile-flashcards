@@ -8,27 +8,34 @@ class IndividualDeck extends Component {
   });
 
   render() {
-    const { deckTitle, deckQuestions } = this.props.navigation.state.params;
+    const { deckTitle, deckCards } = this.props.navigation.state.params;
+    const hasCards = deckCards.length > 0;
     return (
       <View>
         <Text>{deckTitle}</Text>
-        <Text>{deckQuestions.length} questions</Text>
+        <Text>
+          {hasCards ? deckCards.length : 'There are no'} cards
+        </Text>
+        {hasCards && (
+          <TouchableHighlight
+            style={styles.btn}
+            underlayColor={lightBlue}
+            onPress={() =>
+              this.props.navigation.navigate('QuizView', {
+                title: deckTitle,
+                cards: deckCards
+              })
+            }
+          >
+            <Text>Start Quiz</Text>
+          </TouchableHighlight>
+        )}
         <TouchableHighlight
           style={styles.btn}
           underlayColor={lightBlue}
-          onPress={() => this.props.navigation.navigate('QuizView',
-            {
-              title: deckTitle,
-              questions: deckQuestions
-            }
-          )}
+          onPress={() => this.props.navigation.navigate('AddNewCard')}
         >
-          <Text>Start Quiz</Text>
-        </TouchableHighlight>
-        <TouchableHighlight style={styles.btn}
-          underlayColor={lightBlue}
-          onPress={() => this.props.navigation.navigate('AddNewCard')}>
-          <Text>Add Card</Text>
+          <Text>Add a new card</Text>
         </TouchableHighlight>
       </View>
     );

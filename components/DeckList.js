@@ -30,26 +30,28 @@ class DeckList extends Component {
       });
   }
 
+
   render() {
     const { decks } = this.state;
+    console.log(decks);
     return (
       <View style={{ flex: 1 }}>
         <ScrollView>
           {decks.map(deck => (
             <TouchableHighlight
               style={styles.deck}
-              key={deck.title}
+              key={`key-${deck.title}`}
               underlayColor={lightBlue}
               onPress={() =>
                 this.props.navigation.navigate('IndividualDeck', {
                   deckTitle: deck.title,
-                  deckQuestions: deck.questions
+                  deckCards: deck.questions
                 })
               }
             >
               <View>
                 <Text>{deck.title}</Text>
-              <Text>{deck.questions.length} question(s)</Text>
+              <Text>{deck.questions.length} card(s)</Text>
               </View>
             </TouchableHighlight>
           ))}

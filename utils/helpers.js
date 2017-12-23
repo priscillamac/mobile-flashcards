@@ -29,8 +29,17 @@ const decks = {
 };
 
 export function getDecks() {
-  return AsyncStorage.getItem(DECK_STORAGE_KEY).then(results => {
-    return JSON.parse(results);
+  return AsyncStorage.getItem(DECK_STORAGE_KEY).then((results) => {
+    // if there data already exists in the AsyncStorage database
+    if (JSON.parse(results) !== null) {
+      return JSON.parse(results);
+    } else {
+      // no data exists yet - it must be set to the key from the decks array
+      AsyncStorage.setItem(DECK_STORAGE_KEY, JSON.stringify(decks));
+      return AsyncStorage.getItem(DECK_STORAGE_KEY).then((results) => {
+        return JSON.parse(results);
+      });
+    }
   });
 }
 
@@ -41,10 +50,18 @@ export function getDeck(id) {
   });
 }
 
-//
-// export function saveDeckTitle({ title }) {
-//
-// }
+export function saveDeckTitle(title) {
+  console.log(title);
+  return AsyncStorage.mergeItem(
+    DECK_STORAGE_KEY,
+    JSON.stringify({[title]:{
+      title,
+      questions: []
+    }})
+  )
+}
+
+
 //
 // export function addCardToDeck({ title, card }) {
 //
