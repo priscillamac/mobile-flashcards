@@ -2,7 +2,7 @@ import { AsyncStorage } from 'react-native';
 
 const DECK_STORAGE_KEY = '@flashcardsDeck:key';
 
-let decks = {
+const decks = {
   React: {
     title: 'React',
     questions: [
@@ -34,14 +34,18 @@ export function getDecks() {
   });
 }
 
-export function getDeck({ id }) {
-
+export function getDeck(id) {
+  getDecks().then(data => {
+    const arrayOfDecks = Object.keys(data).map(key => data[key]);
+    return arrayOfDecks.filter(data => data.title === id);
+  });
 }
 
-export function saveDeckTitle({ title }) {
-
-}
-
-export function addCardToDeck({ title, card }) {
-  
-}
+//
+// export function saveDeckTitle({ title }) {
+//
+// }
+//
+// export function addCardToDeck({ title, card }) {
+//
+// }

@@ -13,15 +13,21 @@ class DeckList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      decks: []
+      decks: [{ title: '', questions: [] }]
     };
   }
+
   componentDidMount() {
-    getDecks().then(data => {
-      this.setState({
-        decks: Object.keys(data).map(key => data[key])
+    getDecks()
+      .then(data => {
+        this.setState({
+          decks: Object.keys(data).map(key => data[key])
+        });
+      })
+      .catch(error => {
+        console.log('Api call error in getDecks function');
+        alert(error.message);
       });
-    });
   }
 
   render() {
@@ -34,16 +40,16 @@ class DeckList extends Component {
               style={styles.deck}
               key={deck.title}
               underlayColor={lightBlue}
-              onPress={() => this.props.navigation.navigate(
-                'IndividualDeck',
-                { deckTitle: deck.title,
-                  numberOfCards: deck.questions.length
-                }
-              )}
+              onPress={() =>
+                this.props.navigation.navigate('IndividualDeck', {
+                  deckTitle: deck.title,
+                  deckQuestions: deck.questions
+                })
+              }
             >
               <View>
                 <Text>{deck.title}</Text>
-                <Text>{deck.questions.length} card(s)</Text>
+              <Text>{deck.questions.length} question(s)</Text>
               </View>
             </TouchableHighlight>
           ))}

@@ -8,15 +8,20 @@ class IndividualDeck extends Component {
   });
 
   render() {
-    const { params } = this.props.navigation.state;
+    const { deckTitle, deckQuestions } = this.props.navigation.state.params;
     return (
       <View>
-        <Text>{params.deckTitle}</Text>
-        <Text>{params.numberOfCards}</Text>
+        <Text>{deckTitle}</Text>
+        <Text>{deckQuestions.length} questions</Text>
         <TouchableHighlight
           style={styles.btn}
           underlayColor={lightBlue}
-          onPress={() => this.props.navigation.navigate('QuizView')}
+          onPress={() => this.props.navigation.navigate('QuizView',
+            {
+              title: deckTitle,
+              questions: deckQuestions
+            }
+          )}
         >
           <Text>Start Quiz</Text>
         </TouchableHighlight>
