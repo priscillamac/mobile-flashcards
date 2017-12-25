@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableHighlight } from 'react-native';
-import { getDeck } from '../utils/helpers';
+import {
+  getDeck,
+  setLocalNotification,
+  clearLocalNotification
+} from '../utils/helpers';
 
 class QuizView extends Component {
   constructor(props) {
@@ -70,6 +74,16 @@ class QuizView extends Component {
     });
   }
 
+  onSubmitQuiz() {
+    this.props.navigation.navigate('IndividualDeck', {
+      deckTitle: this.props.navigation.state.params.title,
+      deckCards: cards,
+      numberOfCards: cards.length
+    });
+
+    clearLocalNotification().then(setLocalNotification);
+  }
+
   render() {
     const {
       currentQuestion,
@@ -96,13 +110,7 @@ class QuizView extends Component {
           </TouchableHighlight>
           <TouchableHighlight
             style={styles.btn}
-            onPress={() =>
-              this.props.navigation.navigate('IndividualDeck', {
-                deckTitle: this.props.navigation.state.params.title,
-                deckCards: cards,
-                numberOfCards: cards.length
-              })
-            }
+            onPress={this.onSubmitQuiz.bind(this)}
           >
             <Text>Back to deck</Text>
           </TouchableHighlight>

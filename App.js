@@ -9,6 +9,7 @@ import { lightGray, white, purple } from './utils/colors';
 import { TabNavigator, StackNavigator } from 'react-navigation';
 import { Constants } from 'expo';
 import { Ionicons } from '@expo/vector-icons';
+import { setLocalNotification } from './utils/helpers';
 
 function DecksStatusBar({ backgroundColor, ...props }) {
   return (
@@ -59,6 +60,9 @@ const MainNavigator = StackNavigator({
 })
 
 export default class App extends Component {
+  componentDidMount() {
+    setLocalNotification();
+  }
   render() {
     return (
       <View style={styles.container}>

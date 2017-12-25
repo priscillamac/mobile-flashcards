@@ -28,13 +28,10 @@ class AddNewCard extends Component {
     } else {
       addCardToDeck(title, questionValue, answerValue);
 
-      console.log('cards', cards.length);
-      console.log('cards + 1', cards.length + 1);
-
       this.props.navigation.navigate('IndividualDeck', {
         deckTitle: title,
         deckCards: cards,
-        numberOfCards: cards.length + 1,
+        numberOfCards: cards.length + 1
       });
 
       this.setState({
