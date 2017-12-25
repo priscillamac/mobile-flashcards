@@ -80,7 +80,6 @@ class QuizView extends Component {
     } = this.state;
 
     const item = cards[currentQuestion];
-    console.log('cards array', item);
 
     if (showFinalResults) {
       return (
@@ -100,7 +99,8 @@ class QuizView extends Component {
             onPress={() =>
               this.props.navigation.navigate('IndividualDeck', {
                 deckTitle: this.props.navigation.state.params.title,
-                deckCards: cards
+                deckCards: cards,
+                numberOfCards: cards.length
               })
             }
           >

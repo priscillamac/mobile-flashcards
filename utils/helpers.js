@@ -30,7 +30,7 @@ const decks = {
 
 export function getDecks() {
   return AsyncStorage.getItem(DECK_STORAGE_KEY).then(results => {
-    // if data already exists in the AsyncStorage database
+    // if there data already exists in the AsyncStorage database
     if (JSON.parse(results) !== null) {
       return JSON.parse(results);
     } else {
@@ -50,7 +50,7 @@ export function getDeck(id) {
   });
 }
 
-export function saveDeckTitle(title) {
+export function saveNewDeck(title) {
   return AsyncStorage.mergeItem(
     DECK_STORAGE_KEY,
     JSON.stringify({
@@ -63,16 +63,42 @@ export function saveDeckTitle(title) {
 }
 
 export function addCardToDeck(title, question, answer) {
-  console.log(title, question, answer);
-  // getDecks();
-  //
-  // return AsyncStorage.mergeItem(
-  //   DECK_STORAGE_KEY,
-  //   JSON.stringify({[title]:{
-  //     questions: [{
-  //       question,
-  //       answer
-  //     }]
-  //   }})
-  // );
+  getDecks().then(data => {
+    const existingCards = Object.keys(data)
+      .map(key => data[key])
+      .filter(data => data.title === title)[0].questions;
+
+    const hasNoCards = existingCards.length === 0;
+
+    if (hasNoCards) {
+      return AsyncStorage.mergeItem(
+        DECK_STORAGE_KEY,
+        JSON.stringify({
+          [title]: {
+            questions: [
+              {
+                question,
+                answer
+              }
+            ]
+          }
+        })
+      );
+    } else {
+      return AsyncStorage.mergeItem(
+        DECK_STORAGE_KEY,
+        JSON.stringify({
+          [title]: {
+            questions: [
+              ...existingCards,
+              {
+                question,
+                answer
+              }
+            ]
+          }
+        })
+      );
+    }
+  });
 }

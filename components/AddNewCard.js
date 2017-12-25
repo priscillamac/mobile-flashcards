@@ -20,24 +20,28 @@ class AddNewCard extends Component {
 
   onSubmit() {
     const { questionValue, answerValue } = this.state;
+    const { title, cards } = this.props.navigation.state.params;
     if (!questionValue || !answerValue) {
       this.setState({
         showError: true
       });
     } else {
-      console.log('not empty');
+      addCardToDeck(title, questionValue, answerValue);
+
+      console.log('cards', cards.length);
+      console.log('cards + 1', cards.length + 1);
+
+      this.props.navigation.navigate('IndividualDeck', {
+        deckTitle: title,
+        deckCards: cards,
+        numberOfCards: cards.length + 1,
+      });
+
       this.setState({
+        value: '',
         showError: false
       });
     }
-    // addCardToDeck(this.props.navigation.state.params.title, questionValue, answerValue);
-    // this.props.navigation.navigate('IndividualDeck', {
-    //   deckTitle: this.state.value,
-    //   deckCards: []
-    // });
-    // this.setState({
-    //   value: ''
-    // });
   }
 
   render() {
@@ -56,13 +60,13 @@ class AddNewCard extends Component {
           onChangeText={answerValue => this.setState({ answerValue })}
           value={this.state.answerValue}
         />
-        <TouchableHighlight style={styles.btn}
-          onPress={this.onSubmit.bind(this)}>
+        <TouchableHighlight
+          style={styles.btn}
+          onPress={this.onSubmit.bind(this)}
+        >
           <Text>Submit</Text>
         </TouchableHighlight>
-        {showError &&
-          <Text>Please fill in both fields</Text>
-        }
+        {showError && <Text>Please fill in both fields</Text>}
       </View>
     );
   }

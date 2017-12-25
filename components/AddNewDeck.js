@@ -6,7 +6,7 @@ import {
   TouchableHighlight,
   StyleSheet
 } from 'react-native';
-import { saveDeckTitle } from '../utils/helpers';
+import { saveNewDeck } from '../utils/helpers';
 
 class AddNewDeck extends Component {
   constructor(props) {
@@ -24,7 +24,7 @@ class AddNewDeck extends Component {
         showError: true
       });
     } else {
-      saveDeckTitle(this.state.value);
+      saveNewDeck(this.state.value);
       this.props.navigation.navigate('IndividualDeck', {
         deckTitle: this.state.value,
         deckCards: []

@@ -44,7 +44,8 @@ class DeckList extends Component {
               onPress={() =>
                 this.props.navigation.navigate('IndividualDeck', {
                   deckTitle: deck.title,
-                  deckCards: deck.questions
+                  deckCards: deck.questions,
+                  numberOfCards: deck.questions.length
                 })
               }
             >

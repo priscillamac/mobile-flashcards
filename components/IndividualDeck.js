@@ -8,13 +8,14 @@ class IndividualDeck extends Component {
   });
 
   render() {
-    const { deckTitle, deckCards } = this.props.navigation.state.params;
-    const hasCards = deckCards.length > 0;
+    const { deckTitle, deckCards, numberOfCards } = this.props.navigation.state.params;
+    const hasCards = numberOfCards > 0;
+
     return (
       <View>
         <Text>{deckTitle}</Text>
         <Text>
-          {hasCards ? deckCards.length : 'There are no'} cards
+          {hasCards ? numberOfCards : 'There are no'} cards
         </Text>
         {hasCards && (
           <TouchableHighlight
@@ -23,7 +24,8 @@ class IndividualDeck extends Component {
             onPress={() =>
               this.props.navigation.navigate('QuizView', {
                 title: deckTitle,
-                cards: deckCards
+                cards: deckCards,
+                numberOfCards
               })
             }
           >
@@ -35,7 +37,8 @@ class IndividualDeck extends Component {
           underlayColor={lightBlue}
           onPress={() => this.props.navigation.navigate('AddNewCard', {
             title: deckTitle,
-            cards: deckCards
+            cards: deckCards,
+            numberOfCards
           })}
         >
           <Text>Add a new card</Text>
