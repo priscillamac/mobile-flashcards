@@ -13,19 +13,29 @@ class AddNewDeck extends Component {
     super(props);
 
     this.state = {
-      value: ''
+      value: '',
+      showError: false
     };
   }
 
   onSubmit() {
-    saveDeckTitle(this.state.value);
-    this.props.navigation.navigate('IndividualDeck', {
-      deckTitle: this.state.value,
-      deckCards: []
-    });
-    this.setState({
-      value: ''
-    });
+    if (!this.state.value) {
+      this.setState({
+        showError: true
+      });
+    } else {
+      saveDeckTitle(this.state.value);
+      this.props.navigation.navigate('IndividualDeck', {
+        deckTitle: this.state.value,
+        deckCards: []
+      });
+      // clears the value so no longer visible on click back
+      this.setState({
+        value: '',
+        showError: false
+      });
+    }
+
   }
   render() {
     return (
@@ -42,6 +52,9 @@ class AddNewDeck extends Component {
         >
           <Text>Submit</Text>
         </TouchableHighlight>
+        {this.state.showError &&
+          <Text>Please fill in the field</Text>
+        }
       </View>
     );
   }

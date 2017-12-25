@@ -33,7 +33,6 @@ class DeckList extends Component {
 
   render() {
     const { decks } = this.state;
-    console.log(decks);
     return (
       <View style={{ flex: 1 }}>
         <ScrollView>

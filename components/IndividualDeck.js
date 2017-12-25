@@ -33,7 +33,10 @@ class IndividualDeck extends Component {
         <TouchableHighlight
           style={styles.btn}
           underlayColor={lightBlue}
-          onPress={() => this.props.navigation.navigate('AddNewCard')}
+          onPress={() => this.props.navigation.navigate('AddNewCard', {
+            title: deckTitle,
+            cards: deckCards
+          })}
         >
           <Text>Add a new card</Text>
         </TouchableHighlight>
