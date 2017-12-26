@@ -37,19 +37,27 @@ class AddNewCard extends Component {
         value: '',
         showError: false
       });
+      console.log(cards);
 
       if (cards.length === 0) {
-        this.props.navigation.navigate('IndividualDeck', {
+        const { navigation } = this.props;
+        navigation.goBack();
+        navigation.state.params.onSelect({
           deckTitle: title,
           deckCards: [{ answer: answerValue, question: questionValue }],
           numberOfCards: numberOfCards + 1
         });
+
       } else {
-        this.props.navigation.navigate('IndividualDeck', {
+        const { navigation } = this.props;
+        navigation.goBack();
+        navigation.state.params.onSelect({
           deckTitle: title,
           deckCards: cards,
           numberOfCards: numberOfCards + 1
         });
+
+
       }
     }
   }

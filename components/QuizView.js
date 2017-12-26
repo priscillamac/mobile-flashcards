@@ -97,12 +97,7 @@ class QuizView extends Component {
   }
 
   goBackToDeck() {
-    const { title, numberOfCards } = this.props.navigation.state.params;
-    this.props.navigation.navigate('IndividualDeck', {
-      deckTitle: title,
-      deckCards: this.state.cards,
-      numberOfCards
-    });
+    this.props.navigation.goBack();
   }
 
   render() {
