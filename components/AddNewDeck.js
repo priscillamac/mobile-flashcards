@@ -26,9 +26,11 @@ class AddNewDeck extends Component {
       });
     } else {
       saveNewDeck(this.state.value);
+      
       this.props.navigation.navigate('IndividualDeck', {
         deckTitle: this.state.value,
-        deckCards: []
+        deckCards: [],
+        numberOfCards: 0
       });
       // clears the value so no longer visible on click back
       this.setState({

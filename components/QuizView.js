@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
 import {
   getDeck,
+  getDecks,
   setLocalNotification,
   clearLocalNotification
 } from '../utils/helpers';
@@ -12,11 +13,12 @@ class QuizView extends Component {
     super(props);
 
     this.state = {
-      cards: this.props.navigation.state.params.cards,
       currentQuestion: 0,
       showAnswer: false,
       score: 0,
-      showFinalResults: false
+      showFinalResults: false,
+      // begins with props cards then changes to state after component Will Mount
+      cards: this.props.navigation.state.params.cards
     };
   }
 
@@ -25,11 +27,24 @@ class QuizView extends Component {
   });
 
   componentDidMount() {
-    const { title } = this.props.navigation.state.params;
-    getDeck(title);
+    this.setListOfCards();
+  }
+
+  setListOfCards() {
+    getDecks().then(data => {
+      const { title } = this.props.navigation.state.params;
+      const setListOfCards = Object.keys(data)
+        .map(key => data[key])
+        .filter(data => data.title === title)[0].questions;
+
+      this.setState({
+        cards: setListOfCards
+      });
+    });
   }
 
   onSelectCorrect() {
+    this.setListOfCards();
     this.handleNextQuestion();
     this.handleFinalQuestion();
 
@@ -39,6 +54,7 @@ class QuizView extends Component {
   }
 
   onSelectIncorrect() {
+    this.setListOfCards();
     this.handleNextQuestion();
     this.handleFinalQuestion();
   }
@@ -77,16 +93,15 @@ class QuizView extends Component {
 
   onSubmitQuiz() {
     goBackToDeck();
-
     clearLocalNotification().then(setLocalNotification);
   }
 
   goBackToDeck() {
-    const { title, cards } = this.props.navigation.state.params;
+    const { title, numberOfCards } = this.props.navigation.state.params;
     this.props.navigation.navigate('IndividualDeck', {
       deckTitle: title,
-      deckCards: cards,
-      numberOfCards: cards.length
+      deckCards: this.state.cards,
+      numberOfCards
     });
   }
 
@@ -99,16 +114,19 @@ class QuizView extends Component {
       showFinalResults
     } = this.state;
 
+    const { numberOfCards } = this.props.navigation.state.params;
+
     const item = cards[currentQuestion];
 
-    const percentage = Math.round(score / cards.length * 100);
+    console.log('swag yolo', this.state.cards);
+    const percentage = Math.round(score / numberOfCards * 100);
 
     if (showFinalResults) {
       return (
         <View>
           <View style={styles.content}>
             <Text style={styles.subtitle}>
-              You got {score} out of {cards.length} questions correct
+              You got {score} out of {numberOfCards} questions correct
             </Text>
             <Text style={styles.score}>{percentage}%</Text>
           </View>
@@ -119,10 +137,9 @@ class QuizView extends Component {
             <Text style={styles.btnText}>Restart Quiz</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[styles.btn, styles.bgBlue]}
             onPress={this.goBackToDeck.bind(this)}
           >
-            <Text style={styles.btnText}>Back to deck</Text>
+            <Text style={[styles.btnText, styles.blueText]}>Back to deck</Text>
           </TouchableOpacity>
         </View>
       );
@@ -132,7 +149,7 @@ class QuizView extends Component {
       <View>
         <View style={styles.content}>
           <Text style={{ marginBottom: 30 }}>
-            Question {currentQuestion + 1} of {cards.length}
+            Question {currentQuestion + 1} of {numberOfCards}
           </Text>
           <Text style={styles.title}>
             {!showAnswer ? item.question : item.answer}
@@ -206,5 +223,9 @@ const styles = StyleSheet.create({
   },
   bgBlue: {
     backgroundColor: blue
+  },
+  blueText: {
+    color: blue,
+    textAlign: 'center'
   }
 });

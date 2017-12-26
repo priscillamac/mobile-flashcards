@@ -23,6 +23,10 @@ class DeckList extends Component {
     this.getAllDecks();
   }
 
+  componentDidUpdate(){
+    this.getAllDecks();
+  }
+
   getAllDecks() {
     getDecks()
       .then(data => {

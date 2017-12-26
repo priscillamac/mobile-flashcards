@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   StyleSheet
 } from 'react-native';
-import { addCardToDeck } from '../utils/helpers';
+import { addCardToDeck, getDecks } from '../utils/helpers';
 import { blue, red, lightRed } from '../utils/colors';
 
 class AddNewCard extends Component {
@@ -15,7 +15,7 @@ class AddNewCard extends Component {
     this.state = {
       questionValue: '',
       answerValue: '',
-      showError: false
+      showError: false,
     };
   }
 
@@ -23,10 +23,9 @@ class AddNewCard extends Component {
     title: `Add Card to ${navigation.state.params.title}`
   });
 
-
   onSubmit() {
     const { questionValue, answerValue } = this.state;
-    const { title, cards } = this.props.navigation.state.params;
+    const { title, numberOfCards, cards } = this.props.navigation.state.params;
     if (!questionValue || !answerValue) {
       this.setState({
         showError: true
@@ -37,7 +36,7 @@ class AddNewCard extends Component {
       this.props.navigation.navigate('IndividualDeck', {
         deckTitle: title,
         deckCards: cards,
-        numberOfCards: cards.length + 1
+        numberOfCards: numberOfCards + 1
       });
 
       this.setState({
@@ -45,11 +44,13 @@ class AddNewCard extends Component {
         showError: false
       });
     }
+
   }
+
 
   render() {
     const { showError } = this.state;
-    const { title, cards } = this.props.navigation.state.params;
+    const { title } = this.props.navigation.state.params;
     return (
       <View style={styles.content}>
         <View>
@@ -65,12 +66,12 @@ class AddNewCard extends Component {
             onChangeText={answerValue => this.setState({ answerValue })}
             value={this.state.answerValue}
           />
-        <TouchableOpacity
+          <TouchableOpacity
             style={[styles.btn, styles.bgBlue]}
             onPress={this.onSubmit.bind(this)}
           >
             <Text style={styles.btnText}>Submit</Text>
-        </TouchableOpacity>
+          </TouchableOpacity>
           {showError && (
             <Text style={styles.error}>Please fill in both fields</Text>
           )}
