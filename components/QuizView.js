@@ -118,7 +118,6 @@ class QuizView extends Component {
 
     const item = cards[currentQuestion];
 
-    console.log('swag yolo', this.state.cards);
     const percentage = Math.round(score / numberOfCards * 100);
 
     if (showFinalResults) {

@@ -15,7 +15,7 @@ class AddNewCard extends Component {
     this.state = {
       questionValue: '',
       answerValue: '',
-      showError: false,
+      showError: false
     };
   }
 
@@ -33,20 +33,26 @@ class AddNewCard extends Component {
     } else {
       addCardToDeck(title, questionValue, answerValue);
 
-      this.props.navigation.navigate('IndividualDeck', {
-        deckTitle: title,
-        deckCards: cards,
-        numberOfCards: numberOfCards + 1
-      });
-
       this.setState({
         value: '',
         showError: false
       });
+
+      if (cards.length === 0) {
+        this.props.navigation.navigate('IndividualDeck', {
+          deckTitle: title,
+          deckCards: [{ answer: answerValue, question: questionValue }],
+          numberOfCards: numberOfCards + 1
+        });
+      } else {
+        this.props.navigation.navigate('IndividualDeck', {
+          deckTitle: title,
+          deckCards: cards,
+          numberOfCards: numberOfCards + 1
+        });
+      }
     }
-
   }
-
 
   render() {
     const { showError } = this.state;

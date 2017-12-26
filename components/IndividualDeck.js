@@ -14,7 +14,7 @@ class IndividualDeck extends Component {
       numberOfCards
     } = this.props.navigation.state.params;
     const hasCards = numberOfCards > 0;
-
+    
     return (
       <View>
         <View style={styles.content}>
