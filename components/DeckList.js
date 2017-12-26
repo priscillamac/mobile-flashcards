@@ -4,9 +4,9 @@ import {
   Text,
   View,
   ScrollView,
-  TouchableHighlight
+  TouchableOpacity
 } from 'react-native';
-import { lightBlue } from '../utils/colors';
+import { blue } from '../utils/colors';
 import { getDecks } from '../utils/helpers';
 
 class DeckList extends Component {
@@ -30,17 +30,15 @@ class DeckList extends Component {
       });
   }
 
-
   render() {
     const { decks } = this.state;
     return (
       <View style={{ flex: 1 }}>
         <ScrollView>
           {decks.map(deck => (
-            <TouchableHighlight
+            <TouchableOpacity
               style={styles.deck}
               key={`key-${deck.title}`}
-              underlayColor={lightBlue}
               onPress={() =>
                 this.props.navigation.navigate('IndividualDeck', {
                   deckTitle: deck.title,
@@ -49,11 +47,11 @@ class DeckList extends Component {
                 })
               }
             >
-              <View>
-                <Text>{deck.title}</Text>
-              <Text>{deck.questions.length} card(s)</Text>
+              <View style={styles.content}>
+                <Text style={styles.deckTitle}>{deck.title}</Text>
+                <Text>{deck.questions.length} card(s)</Text>
               </View>
-            </TouchableHighlight>
+            </TouchableOpacity>
           ))}
         </ScrollView>
       </View>
@@ -69,12 +67,19 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     margin: 20,
+    marginTop: 10,
+    marginBottom: 0,
     padding: 20,
     borderRadius: 4,
     borderWidth: 0.5,
-    borderColor: '#d6d7da'
+    borderColor: '#d6d7da',
+    backgroundColor: '#fff'
   },
   deckTitle: {
-    fontSize: 16
+    fontSize: 20,
+    paddingBottom: 3
+  },
+  content: {
+    alignItems: 'center'
   }
 });

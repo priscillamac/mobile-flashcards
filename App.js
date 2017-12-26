@@ -44,12 +44,6 @@ const MainNavigator = StackNavigator({
   },
   IndividualDeck: {
     screen: IndividualDeck,
-    navigationOptions: {
-      // headerTintColor: white,
-      // headerStyle: {
-      //   backgroundColor: purple
-      // },
-    }
   },
   QuizView: {
     screen: QuizView
@@ -66,7 +60,6 @@ export default class App extends Component {
   render() {
     return (
       <View style={styles.container}>
-        {/* <DecksStatusBar backgroundColor={lightGray} /> */}
         <MainNavigator />
       </View>
     );

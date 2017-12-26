@@ -3,10 +3,11 @@ import {
   Text,
   View,
   TextInput,
-  TouchableHighlight,
+  TouchableOpacity,
   StyleSheet
 } from 'react-native';
 import { addCardToDeck } from '../utils/helpers';
+import { blue, red, lightRed } from '../utils/colors';
 
 class AddNewCard extends Component {
   constructor(props) {
@@ -43,27 +44,33 @@ class AddNewCard extends Component {
 
   render() {
     const { showError } = this.state;
+    const { title, cards } = this.props.navigation.state.params;
     return (
-      <View>
-        <Text>Question</Text>
-        <TextInput
-          style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-          onChangeText={questionValue => this.setState({ questionValue })}
-          value={this.state.questionValue}
-        />
-        <Text>Answer</Text>
-        <TextInput
-          style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
-          onChangeText={answerValue => this.setState({ answerValue })}
-          value={this.state.answerValue}
-        />
-        <TouchableHighlight
-          style={styles.btn}
-          onPress={this.onSubmit.bind(this)}
-        >
-          <Text>Submit</Text>
-        </TouchableHighlight>
-        {showError && <Text>Please fill in both fields</Text>}
+      <View style={styles.content}>
+        <Text style={styles.title}>Add a new card to {title}</Text>
+        <View>
+          <Text style={styles.inputLabel}>Question</Text>
+          <TextInput
+            style={styles.textInput}
+            onChangeText={questionValue => this.setState({ questionValue })}
+            value={this.state.questionValue}
+          />
+          <Text style={styles.inputLabel}>Answer</Text>
+          <TextInput
+            style={styles.textInput}
+            onChangeText={answerValue => this.setState({ answerValue })}
+            value={this.state.answerValue}
+          />
+        <TouchableOpacity
+            style={[styles.btn, styles.bgBlue]}
+            onPress={this.onSubmit.bind(this)}
+          >
+            <Text style={styles.btnText}>Submit</Text>
+        </TouchableOpacity>
+          {showError && (
+            <Text style={styles.error}>Please fill in both fields</Text>
+          )}
+        </View>
       </View>
     );
   }
@@ -72,14 +79,50 @@ class AddNewCard extends Component {
 export default AddNewCard;
 
 const styles = StyleSheet.create({
+  content: {
+    marginHorizontal: 40
+  },
+  inputLabel: {
+    fontSize: 15
+  },
+  textInput: {
+    height: 40,
+    borderColor: blue,
+    borderWidth: 1,
+    margin: 10,
+    marginHorizontal: 0,
+    padding: 10
+  },
+  title: {
+    fontSize: 30,
+    paddingBottom: 5,
+    textAlign: 'center',
+    marginTop: 40,
+    marginBottom: 30
+  },
   btn: {
     height: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    margin: 20,
+    marginTop: 20,
     padding: 20,
     borderRadius: 4,
     borderWidth: 0.5,
     borderColor: '#d6d7da'
+  },
+  btnText: {
+    color: '#fff',
+    fontSize: 20
+  },
+  bgBlue: {
+    backgroundColor: blue
+  },
+  error: {
+    borderWidth: 1,
+    borderColor: red,
+    backgroundColor: lightRed,
+    padding: 10,
+    paddingHorizontal: 20,
+    marginTop: 20
   }
 });

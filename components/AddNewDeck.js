@@ -3,10 +3,11 @@ import {
   Text,
   View,
   TextInput,
-  TouchableHighlight,
+  TouchableOpacity,
   StyleSheet
 } from 'react-native';
 import { saveNewDeck } from '../utils/helpers';
+import { blue, red, lightRed } from '../utils/colors';
 
 class AddNewDeck extends Component {
   constructor(props) {
@@ -35,26 +36,25 @@ class AddNewDeck extends Component {
         showError: false
       });
     }
-
   }
   render() {
     return (
-      <View>
-        <Text>What is the title of your new deck?</Text>
+      <View style={styles.content}>
+        <Text style={styles.title}>What is the title of your new deck?</Text>
         <TextInput
-          style={{ height: 40, borderColor: 'gray', borderWidth: 1 }}
+          style={styles.textInput}
           onChangeText={value => this.setState({ value })}
           value={this.state.value}
         />
-        <TouchableHighlight
-          style={styles.btn}
+        <TouchableOpacity
+          style={[styles.btn, styles.bgBlue]}
           onPress={this.onSubmit.bind(this)}
         >
-          <Text>Submit</Text>
-        </TouchableHighlight>
-        {this.state.showError &&
-          <Text>Please fill in the field</Text>
-        }
+          <Text style={styles.btnText}>Submit</Text>
+        </TouchableOpacity>
+        {this.state.showError && (
+          <Text style={styles.error}>Please fill in the field</Text>
+        )}
       </View>
     );
   }
@@ -63,14 +63,45 @@ class AddNewDeck extends Component {
 export default AddNewDeck;
 
 const styles = StyleSheet.create({
+  content: {
+    marginHorizontal: 40,
+    marginTop: 40
+  },
+  title: {
+    fontSize: 30,
+    paddingBottom: 5,
+    textAlign: 'center'
+  },
+  textInput: {
+    height: 40,
+    borderColor: blue,
+    borderWidth: 1,
+    margin: 10,
+    marginHorizontal: 0,
+    padding: 10
+  },
   btn: {
     height: 20,
     alignItems: 'center',
     justifyContent: 'center',
-    margin: 20,
     padding: 20,
     borderRadius: 4,
     borderWidth: 0.5,
     borderColor: '#d6d7da'
+  },
+  bgBlue: {
+    backgroundColor: blue
+  },
+  btnText: {
+    color: '#fff',
+    fontSize: 20
+  },
+  error: {
+    borderWidth: 1,
+    borderColor: red,
+    backgroundColor: lightRed,
+    padding: 10,
+    paddingHorizontal: 20,
+    marginTop: 20
   }
 });

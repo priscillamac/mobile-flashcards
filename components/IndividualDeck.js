@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Text, View, TouchableHighlight, StyleSheet } from 'react-native';
-import { lightBlue } from '../utils/colors';
+import { Text, View, TouchableOpacity, StyleSheet } from 'react-native';
+import { blue, green } from '../utils/colors';
 
 class IndividualDeck extends Component {
   static navigationOptions = ({ navigation }) => ({
@@ -8,19 +8,24 @@ class IndividualDeck extends Component {
   });
 
   render() {
-    const { deckTitle, deckCards, numberOfCards } = this.props.navigation.state.params;
+    const {
+      deckTitle,
+      deckCards,
+      numberOfCards
+    } = this.props.navigation.state.params;
     const hasCards = numberOfCards > 0;
 
     return (
       <View>
-        <Text>{deckTitle}</Text>
-        <Text>
-          {hasCards ? numberOfCards : 'There are no'} cards
-        </Text>
+        <View style={styles.content}>
+          <Text style={styles.title}>{deckTitle}</Text>
+        <Text style={styles.subtitle}>
+            {hasCards ? numberOfCards : 'There are no'} cards
+          </Text>
+        </View>
         {hasCards && (
-          <TouchableHighlight
-            style={styles.btn}
-            underlayColor={lightBlue}
+          <TouchableOpacity
+            style={[styles.btn, styles.bgblue]}
             onPress={() =>
               this.props.navigation.navigate('QuizView', {
                 title: deckTitle,
@@ -29,20 +34,21 @@ class IndividualDeck extends Component {
               })
             }
           >
-            <Text>Start Quiz</Text>
-          </TouchableHighlight>
+            <Text style={styles.btnText}>Start Quiz</Text>
+        </TouchableOpacity>
         )}
-        <TouchableHighlight
-          style={styles.btn}
-          underlayColor={lightBlue}
-          onPress={() => this.props.navigation.navigate('AddNewCard', {
-            title: deckTitle,
-            cards: deckCards,
-            numberOfCards
-          })}
+        <TouchableOpacity
+          style={[styles.btn, styles.bgGreen]}
+          onPress={() =>
+            this.props.navigation.navigate('AddNewCard', {
+              title: deckTitle,
+              cards: deckCards,
+              numberOfCards
+            })
+          }
         >
-          <Text>Add a new card</Text>
-        </TouchableHighlight>
+          <Text style={styles.btnText}>Add a new card</Text>
+      </TouchableOpacity>
       </View>
     );
   }
@@ -51,14 +57,39 @@ class IndividualDeck extends Component {
 export default IndividualDeck;
 
 const styles = StyleSheet.create({
+  content: {
+    padding: 20,
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 30,
+    marginBottom: 10
+  },
   btn: {
     height: 20,
     alignItems: 'center',
     justifyContent: 'center',
     margin: 20,
+    marginHorizontal: 40,
     padding: 20,
     borderRadius: 4,
     borderWidth: 0.5,
     borderColor: '#d6d7da'
+  },
+  btnText: {
+    color: '#fff',
+    fontSize: 20
+  },
+  title: {
+    fontSize: 30,
+    paddingBottom: 5
+  },
+  subtitle: {
+    fontSize: 20
+  },
+  bgblue: {
+    backgroundColor: blue
+  },
+  bgGreen: {
+    backgroundColor: green
   }
 });
