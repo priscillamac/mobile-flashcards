@@ -4,7 +4,8 @@ import {
   Text,
   View,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  RefreshControl
 } from 'react-native';
 import { blue } from '../utils/colors';
 import { getDecks } from '../utils/helpers';
@@ -13,15 +14,21 @@ class DeckList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      decks: [{ title: '', questions: [] }]
+      decks: [{ title: '', questions: [] }],
+      refreshing: false
     };
   }
 
   componentDidMount() {
+    this.getAllDecks();
+  }
+
+  getAllDecks() {
     getDecks()
       .then(data => {
         this.setState({
-          decks: Object.keys(data).map(key => data[key])
+          decks: Object.keys(data).map(key => data[key]),
+          refreshing: false
         });
       })
       .catch(error => {
@@ -30,11 +37,23 @@ class DeckList extends Component {
       });
   }
 
+  onRefresh() {
+    this.setState({ refreshing: true });
+    this.getAllDecks();
+  }
+
   render() {
     const { decks } = this.state;
     return (
       <View style={{ flex: 1 }}>
-        <ScrollView>
+        <ScrollView
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={this.onRefresh.bind(this)}
+            />
+          }
+        >
           {decks.map(deck => (
             <TouchableOpacity
               style={styles.deck}

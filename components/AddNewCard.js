@@ -19,6 +19,11 @@ class AddNewCard extends Component {
     };
   }
 
+  static navigationOptions = ({ navigation }) => ({
+    title: `Add Card to ${navigation.state.params.title}`
+  });
+
+
   onSubmit() {
     const { questionValue, answerValue } = this.state;
     const { title, cards } = this.props.navigation.state.params;
@@ -47,7 +52,6 @@ class AddNewCard extends Component {
     const { title, cards } = this.props.navigation.state.params;
     return (
       <View style={styles.content}>
-        <Text style={styles.title}>Add a new card to {title}</Text>
         <View>
           <Text style={styles.inputLabel}>Question</Text>
           <TextInput
@@ -80,7 +84,8 @@ export default AddNewCard;
 
 const styles = StyleSheet.create({
   content: {
-    marginHorizontal: 40
+    marginHorizontal: 40,
+    marginTop: 30
   },
   inputLabel: {
     fontSize: 15
@@ -92,13 +97,6 @@ const styles = StyleSheet.create({
     margin: 10,
     marginHorizontal: 0,
     padding: 10
-  },
-  title: {
-    fontSize: 30,
-    paddingBottom: 5,
-    textAlign: 'center',
-    marginTop: 40,
-    marginBottom: 30
   },
   btn: {
     height: 20,
